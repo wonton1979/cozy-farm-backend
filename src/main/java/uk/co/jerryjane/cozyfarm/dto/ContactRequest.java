@@ -13,7 +13,7 @@ import lombok.Setter;
 public class ContactRequest {
 
     @NotBlank
-    @Size(max = 50)
+    @Size(min = 2,max = 50)
     private String visitorName;
 
     @NotBlank

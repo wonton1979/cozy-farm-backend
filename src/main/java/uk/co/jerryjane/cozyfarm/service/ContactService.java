@@ -5,30 +5,39 @@ import software.amazon.awssdk.services.ses.SesClient;
 import software.amazon.awssdk.services.ses.model.*;
 import uk.co.jerryjane.cozyfarm.dto.ContactRequest;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import software.amazon.awssdk.services.ses.model.SesException;
+
+import java.util.Map;
+
 
 @Service
 public class ContactService {
-
+    private static final Logger logger =
+            LoggerFactory.getLogger(ContactService.class);
     private final SesClient sesClient;
+    private final ContactMessageService contactMessageService;
+    private final EmailTemplateService emailTemplateService;
 
-    public ContactService(SesClient sesClient) {
+    public ContactService(SesClient sesClient, ContactMessageService contactMessageService, EmailTemplateService emailTemplateService) {
         this.sesClient = sesClient;
+        this.contactMessageService  = contactMessageService;
+        this.emailTemplateService = emailTemplateService;
     }
 
-    public void handleContact(ContactRequest contactRequest) {
-
+    public Map<String,String> handleContact(ContactRequest contactRequest) {
+        contactMessageService.saveContactMessage(contactRequest);
+        String htmlContent = emailTemplateService.buildContactReceiveEmail(contactRequest);
         Destination destination = Destination.builder().toAddresses("guanyejun@hotmail.com").build();
         Content subject = Content.builder().data("New Cozy Farm contact message").build();
-        Content textBody = Content.builder()
-                .data(
-                        "Name: " + contactRequest.getVisitorName() + "\n" +
-                                "Email: " + contactRequest.getVisitorEmail() + "\n\n" +
-                                "Message:\n" + contactRequest.getMessage()
-                )
+
+        Content htmlBody = Content.builder()
+                .data(htmlContent)
                 .build();
 
         Body body = Body.builder()
-                .text(textBody)
+                .html(htmlBody)
                 .build();
 
         Message message = Message.builder()
@@ -43,9 +52,15 @@ public class ContactService {
                 .message(message)
                 .build();
 
-        sesClient.sendEmail(request);
-
+        try {
+            sesClient.sendEmail(request);
+        } catch (SesException e) {
+            logger.error(
+                    "Failed to send SES notification for contact from {}",
+                    contactRequest.getVisitorEmail(),
+                    e
+            );
+        }
+        return Map.of("message", "Message received successfully");
     }
-
-
 }

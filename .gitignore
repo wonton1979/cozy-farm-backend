@@ -35,3 +35,9 @@ build/
 
 ### Environment Variable ###
 .env
+
+### SQLite ###
+data/
+*.db
+*.db-shm
+*.db-wal
