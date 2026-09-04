@@ -19,6 +19,14 @@ public class EmailTemplateService {
                 .replace("{{visitorMessage}}", contactRequest.getMessage());
     }
 
+    public String buildContactReplyEmail(ContactRequest contactRequest) {
+
+        String template = loadTemplate("templates/email/contact-reply.html");
+        return template
+                .replace("{{visitorName}}", contactRequest.getVisitorName())
+                .replace("{{message}}", contactRequest.getMessage());
+    }
+
     private String loadTemplate(String path) {
         try {
             ClassPathResource resource = new ClassPathResource(path);

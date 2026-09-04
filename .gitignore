@@ -41,3 +41,5 @@ data/
 *.db
 *.db-shm
 *.db-wal
+
+application-local.properties

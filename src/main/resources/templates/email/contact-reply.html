@@ -100,7 +100,7 @@
                             color: #454940;
                         "
                     >
-                        Hi <strong>Sarah</strong>,
+                        Hi <strong>{{visitorName}}</strong>,
                     </td>
                 </tr>
 
@@ -115,15 +115,23 @@
                             color: #454940;
                         "
                     >
-                        Thank you so much for your lovely message.
-
-                        It was really nice to hear from you. We're glad you enjoyed visiting Cozy Farm, and we hope you'll stop by again soon.
-
-                        If there's anything else you'd like to ask, just reply to this email and we'll be happy to help.
+                        {{message}}
                     </td>
                 </tr>
 
-
+                <!-- REPLY NOTE -->
+                <tr>
+                    <td
+                            style="
+                                    padding: 14px 40px 4px 40px;
+                                    font-size: 13px;
+                                    line-height: 1.7;
+                                    color: #7b806f;
+                                   "
+                    >
+                        If you'd like to reply, please send us a message through the Cozy Farm mailbox.
+                    </td>
+                </tr>
                 <!-- SIGN OFF -->
                 <tr>
                     <td
