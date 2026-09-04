@@ -1,0 +1,9 @@
+.git
+.idea
+target
+data
+*.db
+*.db-shm
+*.db-wal
+.env
+src/main/resources/application-local.properties

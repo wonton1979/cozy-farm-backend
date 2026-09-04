@@ -39,7 +39,7 @@ class ContactMessageServiceTest {
                 ArgumentCaptor.forClass(ContactMessage.class);
 
         // Act
-        contactMessageService.saveContactMessage(contactRequest);
+        contactMessageService.saveAndSendContactMessage(contactRequest);
 
         // Assert
         verify(contactMessageRepository)
