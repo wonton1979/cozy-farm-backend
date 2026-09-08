@@ -1,5 +1,7 @@
 package uk.co.jerryjane.cozyfarm.service;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -56,13 +58,14 @@ public class ContactMessageService {
         return unrepliedMessage;
     }
 
-    public List<ContactResponse> findUnrepliedMessage() {
-        List<ContactMessage> contactMessages = contactMessageRepository.findByRepliedAtIsNullOrderByCreatedAtDesc();
-        List<ContactResponse> contactResponses = new ArrayList<>();
-        for (ContactMessage contactMessage : contactMessages) {
-            contactResponses.add(ContactResponse.from(contactMessage));
-        }
-        return contactResponses;
+    public Page<ContactResponse> findUnrepliedMessage(Pageable pageable) {
+        Page<ContactMessage> contactMessages = contactMessageRepository.findByRepliedAtIsNullOrderByCreatedAtDesc(pageable);
+        return contactMessages.map(ContactResponse::from);
+    }
+
+    public Page<ContactResponse> findRepliedMessage(Pageable pageable) {
+        Page<ContactMessage> contactMessages = contactMessageRepository.findAllByRepliedAtIsNotNullOrderByRepliedAtDesc(pageable);
+        return contactMessages.map(ContactResponse::from);
     }
 
     public ContactMessage findUnrepliedMessageById(Long messageId) {
