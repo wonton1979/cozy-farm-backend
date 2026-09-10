@@ -9,7 +9,8 @@ public record ContactResponse (
         String visitorName,
         String visitorEmail,
         String visitorMessage,
-        Instant createdAt
+        Instant createdAt,
+        String replyMessage
 ) {
     public static ContactResponse from(ContactMessage contactMessage) {
         return new ContactResponse(
@@ -17,7 +18,8 @@ public record ContactResponse (
                 contactMessage.getVisitorName(),
                 contactMessage.getVisitorEmail(),
                 contactMessage.getVisitorMessage(),
-                contactMessage.getCreatedAt()
+                contactMessage.getCreatedAt(),
+                contactMessage.getReplyMessage()
         );
     }
 }
