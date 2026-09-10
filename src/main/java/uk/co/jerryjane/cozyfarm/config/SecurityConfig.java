@@ -32,7 +32,10 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .dispatcherTypeMatchers(DispatcherType.ERROR).permitAll()
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
-
+                        .requestMatchers(
+                                HttpMethod.GET,
+                                "/api/health"
+                        ).permitAll()
                         .requestMatchers(
                                 HttpMethod.POST,
                                 "/api/contact/**"
